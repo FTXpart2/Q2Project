@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedList;
-
+import java.util.ArrayList;
 public class GridMap extends JPanel {
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
@@ -77,6 +77,7 @@ public class GridMap extends JPanel {
             }
         }
         drawRhineRiver();
+        drawLandmarks();
     }
 
     private void drawRhineRiver() {
@@ -105,6 +106,18 @@ public class GridMap extends JPanel {
             int col = location[1];
             addObject(row, col, new GridObject("Water", Color.BLUE)); // Cyan color for river
         }
+
+    }
+    
+    private void drawLandmarks(){
+        int[][] landmarks = {
+        /*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55}};
+        for (int[] location : landmarks) {
+            int row = location[0];
+            int col = location[1];
+            addObject(row, col, new GridObject("landmark", Color.RED)); // Cyan color for river
+        }
+
     }
 
     public void addObject(int row, int col, GridObject obj) {
@@ -154,6 +167,18 @@ public class GridMap extends JPanel {
         int obstacleViewportY = (obstacle.getRow() - viewportStartRow) * CELL_SIZE;
         obstacle.drawMe(g, obstacleViewportX, obstacleViewportY, CELL_SIZE);
 
+        int[][] bridges = {{84, 16},{48, 41},{27, 58}
+
+        };
+        ArrayList<Bridge> drawbridges = new ArrayList<>();
+        for (int[] location : bridges) {
+            int row = location[0];
+            int col = location[1];
+            drawbridges.add(new Bridge(row, col)); 
+        }
+        for(int i = 0; i < drawbridges.size(); i++){
+            drawbridges.get(i).drawMe(g, (drawbridges.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawbridges.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
+        }
         drawBorders(g, viewportStartRow, viewportStartCol);
     }
 
@@ -176,4 +201,6 @@ public class GridMap extends JPanel {
             g.drawString("Austria", getWidth() / 2 - 30, getHeight() - 10); // Bottom
         }
     }
+
+    
 }

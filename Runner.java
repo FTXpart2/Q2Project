@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class Runner {
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Map of Germany");
+        JFrame frame = new JFrame("Germany");
         Player player = new Player(50, 50); // Start the player near the center of the grid
         GridMap gridMap = new GridMap(player); // Pass player to GridMap
 
