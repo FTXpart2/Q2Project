@@ -4,46 +4,57 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class GridMap extends JPanel {
-    private final int GRID_SIZE = 100; // Full map size (100x100 grid)
-    private final int VIEWPORT_SIZE = 10; // Viewport size (10x10 grid visible at a time)
-    private final int CELL_SIZE = 50; // Each cell is 30px
+    private final int GRID_SIZE = 100;
+    private final int VIEWPORT_SIZE = 10;
+    private final int CELL_SIZE = 50;
     private final HashMap<Location, LinkedList<GridObject>> gridMapTable = new HashMap<>();
     private Player player;
-    private Boat boat;
+    private Obstacle obstacle; // Obstacle instance
+
     public GridMap(Player player) {
         this.player = player;
+        this.obstacle = new Obstacle(50, 50); // Starting position for the obstacle
         generateGermanyMap();
-        boat = new Boat(this);
-        new Thread(boat).start();
+
+        // Start the obstacle movement thread
+        Thread obstacleThread = new Thread(() -> {
+            while (true) {
+                obstacle.move();
+                repaint();
+                try {
+                    Thread.sleep(500); // Move the obstacle every 500ms
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        obstacleThread.start();
     }
 
     private void generateGermanyMap() {
-        // Germany spans the entire grid (100x100)
+        // Generate the map as before (with terrain, river, etc.)
         int germanyTop = 10, germanyBottom = 90;
         int germanyLeft = 10, germanyRight = 90;
-    
+
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
+                // Fill the map with terrain, water, and edges (same logic as before)
                 if (row >= germanyTop && row <= germanyBottom && col >= germanyLeft && col <= germanyRight) {
-                    // Northern coastline: Sand dominant
                     if (row < germanyTop + 10 && Math.random() < 0.6) {
                         addObject(row, col, new GridObject("", Color.YELLOW));
-                    }
-                    // Inland mix of grass, dirt, and trees
-                    else {
+                    } else {
                         double random = Math.random();
                         if (random < 0.4) {
-                            addObject(row, col, new GridObject("", Color.GREEN)); // 40% chance for grass
+                            addObject(row, col, new GridObject("", Color.GREEN));
                         } else if (random < 0.7) {
-                            addObject(row, col, new GridObject("", new Color(139, 69, 19))); // 30% chance for dirt
+                            addObject(row, col, new GridObject("", new Color(139, 69, 19)));
                         } else if (random < 0.85) {
-                            addObject(row, col, new GridObject("", new Color(0, 153, 0))); // 15% chance for tree
+                            addObject(row, col, new GridObject("", new Color(0, 153, 0)));
                         } else {
-                            addObject(row, col, new GridObject("", Color.GRAY)); // 15% chance for rock
+                            addObject(row, col, new GridObject("", Color.GRAY));
                         }
                     }
-                } 
-                else if (row < germanyTop) {
+                } else if (row < germanyTop) {
                     // Northern edge (Water - North Sea/Baltic Sea)
                     addObject(row, col, new GridObject("", Color.BLUE));
                 } 
@@ -67,11 +78,10 @@ public class GridMap extends JPanel {
         }
         drawRhineRiver();
     }
-    
-    
-    
+
     private void drawRhineRiver() {
-        // Define the path of the Rhine River
+        // Add the river to the map as before
+         // Define the path of the Rhine River
         int[][] rhinePath = {
             {85,10},{85,14},{85,13},{85,12},{85,11},{85, 15}, {84, 16}, {83, 16}, {82, 17}, {81, 18}, // Starting from the southwest
             {80, 18}, {79, 19}, {78, 19}, {77, 20}, {76, 21},
@@ -96,7 +106,7 @@ public class GridMap extends JPanel {
             addObject(row, col, new GridObject("Water", Color.BLUE)); // Cyan color for river
         }
     }
-    
+
     public void addObject(int row, int col, GridObject obj) {
         Location loc = new Location(row, col);
         gridMapTable.computeIfAbsent(loc, k -> new LinkedList<>()).add(obj);
@@ -114,23 +124,18 @@ public class GridMap extends JPanel {
         viewportStartRow = Math.min(viewportStartRow, GRID_SIZE - VIEWPORT_SIZE);
         viewportStartCol = Math.min(viewportStartCol, GRID_SIZE - VIEWPORT_SIZE);
 
-        // Draw the 10x10 viewport
+        // Draw the 10x10 viewport as before
         for (int r = 0; r < VIEWPORT_SIZE; r++) {
             for (int c = 0; c < VIEWPORT_SIZE; c++) {
                 int gridRow = viewportStartRow + r;
                 int gridCol = viewportStartCol + c;
 
                 Location loc = new Location(gridRow, gridCol);
-
-                // Draw background cell
                 g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-
-                // Draw grid border
                 g.setColor(Color.BLACK);
                 g.drawRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
-                // Draw objects in this cell
                 if (gridMapTable.containsKey(loc)) {
                     for (GridObject obj : gridMapTable.get(loc)) {
                         obj.drawMe(g, c * CELL_SIZE, r * CELL_SIZE);
@@ -144,13 +149,17 @@ public class GridMap extends JPanel {
         int playerViewportY = (player.getRow() - viewportStartRow) * CELL_SIZE;
         player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
 
-        // Draw border labels if the player is near the edge
+        // Draw the obstacle
+        int obstacleViewportX = (obstacle.getCol() - viewportStartCol) * CELL_SIZE;
+        int obstacleViewportY = (obstacle.getRow() - viewportStartRow) * CELL_SIZE;
+        obstacle.drawMe(g, obstacleViewportX, obstacleViewportY, CELL_SIZE);
+
         drawBorders(g, viewportStartRow, viewportStartCol);
-        boat.draw(g);
     }
 
     private void drawBorders(Graphics g, int viewportStartRow, int viewportStartCol) {
-        g.setColor(Color.BLACK);
+        // Draw borders as before
+          g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 12));
 
         // Check if the viewport includes the labeled borders

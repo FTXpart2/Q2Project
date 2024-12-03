@@ -6,8 +6,7 @@ public class Runner {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Map of Germany");
         Player player = new Player(50, 50); // Start the player near the center of the grid
-        GridMap gridMap = new GridMap(player);
-        
+        GridMap gridMap = new GridMap(player); // Pass player to GridMap
 
         frame.add(gridMap);
         frame.setSize(500, 500); // 20x20 cells visible, each 25px
@@ -16,18 +15,10 @@ public class Runner {
         // Key listener for player movement
         frame.addKeyListener(new KeyAdapter() {
             @Override
-            
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 int dRow = 0, dCol = 0;
 
-                // Update player position based on key press
-                
-                    try {
-                        Thread.sleep(50); // Move every 500 milliseconds
-                    } catch (InterruptedException c) {
-                        c.printStackTrace();
-                    }
                 switch (key) {
                     case KeyEvent.VK_W -> dRow = -1; // Move up
                     case KeyEvent.VK_S -> dRow = 1;  // Move down
@@ -38,10 +29,8 @@ public class Runner {
                 // Update player position
                 player.move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
-            
-        }
+            }
         });
-        
 
         frame.setVisible(true);
     }
