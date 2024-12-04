@@ -1,8 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 public class GridMap extends JPanel {
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
@@ -10,16 +15,24 @@ public class GridMap extends JPanel {
     private final HashMap<Location, LinkedList<GridObject>> gridMapTable = new HashMap<>();
     private Player player;
     private Obstacle obstacle; // Obstacle instance
-
+    private Obstacle obstacle2;
+    private Obstacle obstacle3;
+    private Obstacle obstacle4;
+    
     public GridMap(Player player) {
         this.player = player;
         this.obstacle = new Obstacle(50, 50); // Starting position for the obstacle
         generateGermanyMap();
-
+        obstacle2 = new Obstacle(80,35);
+        obstacle3 = new Obstacle(20, 30);
+        obstacle4 = new Obstacle(20, 70);
         // Start the obstacle movement thread
         Thread obstacleThread = new Thread(() -> {
             while (true) {
                 obstacle.move();
+                obstacle2.move();
+                obstacle3.move();
+                obstacle4.move();
                 repaint();
                 try {
                     Thread.sleep(500); // Move the obstacle every 500ms
@@ -104,7 +117,7 @@ public class GridMap extends JPanel {
         for (int[] location : rhinePath) {
             int row = location[0];
             int col = location[1];
-            addObject(row, col, new GridObject("Water", Color.BLUE)); // Cyan color for river
+            addObject(row, col, new GridObject("", Color.BLUE)); // Cyan color for river
         }
 
     }
@@ -158,14 +171,24 @@ public class GridMap extends JPanel {
         }
 
         // Draw the player at their position within the viewport
+        
         int playerViewportX = (player.getCol() - viewportStartCol) * CELL_SIZE;
         int playerViewportY = (player.getRow() - viewportStartRow) * CELL_SIZE;
-        player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
+      
 
         // Draw the obstacle
         int obstacleViewportX = (obstacle.getCol() - viewportStartCol) * CELL_SIZE;
         int obstacleViewportY = (obstacle.getRow() - viewportStartRow) * CELL_SIZE;
-        obstacle.drawMe(g, obstacleViewportX, obstacleViewportY, CELL_SIZE);
+        obstacle.drawMe(g, obstacleViewportX, obstacleViewportY, CELL_SIZE, "Audi");
+        int obstacleViewportX1 = (obstacle2.getCol() - viewportStartCol) * CELL_SIZE;
+        int obstacleViewportY1 = (obstacle2.getRow() - viewportStartRow) * CELL_SIZE;
+        obstacle2.drawMe(g, obstacleViewportX1, obstacleViewportY1, CELL_SIZE,"Panzer");
+        int obstacleViewportX2 = (obstacle3.getCol() - viewportStartCol) * CELL_SIZE;
+        int obstacleViewportY2 = (obstacle3.getRow() - viewportStartRow) * CELL_SIZE;
+        obstacle3.drawMe(g, obstacleViewportX2, obstacleViewportY2, CELL_SIZE,"Beetle");
+        int obstacleViewportX3 = (obstacle4.getCol() - viewportStartCol) * CELL_SIZE;
+        int obstacleViewportY3 = (obstacle4.getRow() - viewportStartRow) * CELL_SIZE;
+        obstacle4.drawMe(g, obstacleViewportX3, obstacleViewportY3, CELL_SIZE, "Mercedes");
 
         int[][] bridges = {{84, 16},{48, 41},{27, 58}
 
@@ -180,6 +203,54 @@ public class GridMap extends JPanel {
             drawbridges.get(i).drawMe(g, (drawbridges.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawbridges.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
         }
         drawBorders(g, viewportStartRow, viewportStartCol);
+        player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
+        if(obstacle.getCol() == player.getCol() && obstacle.getRow() == player.getRow()){
+            player.restart();
+        }
+         if(obstacle2.getCol() == player.getCol() && obstacle2.getRow() == player.getRow()){
+            player.restart();
+        }
+         if(obstacle3.getCol() == player.getCol() && obstacle3.getRow() == player.getRow()){
+            player.restart();
+        }
+         if(obstacle4.getCol() == player.getCol() && obstacle4.getRow() == player.getRow()){
+            player.restart();
+        }
+        /* 
+        if (info != null) {
+                
+                JPanel imagePanel = new JPanel();
+                imagePanel.setLayout(new GridLayout(0, 1)); // One column for images
+
+                // Limit images to a maximum of 2
+                int count = 0;
+                for (String url : info.getLandmarkPictures()) {
+                    if (count < 2) {
+                        try {
+                            ImageIcon icon = new ImageIcon(new URL(url));
+                            if (icon.getIconWidth() > 0) { // Check if image loaded
+                                JLabel label = new JLabel(icon);
+                                imagePanel.add(label);
+                                count++;
+                            } else {
+                                System.err.println("Image not found or invalid URL: " + url);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Failed to load image from URL: " + url);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                // Show images in a dialog
+                if (count > 0) {
+                    JOptionPane.showMessageDialog(frame, imagePanel, "State Info and Pictures", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No pictures available for this state.", "State Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } 
+*/
+
     }
 
     private void drawBorders(Graphics g, int viewportStartRow, int viewportStartCol) {

@@ -36,6 +36,18 @@ public class GridObject {
         g.fillRect(x, y, 50, 50);
         g.setColor(Color.BLACK);
         g.drawString(name, x + 5, y + 25);
+        if(name == "Berlin Wall"){
+            //draw picture
+        }
+        if(name == "Cologne Cathederal"){
+            //draw picture
+        }
+        if(name == "Brandenburg Gate"){
+            //draw picture
+        }
+        if(name == ""){
+            //draw picture
+        }
     }
 
     public String getName() {

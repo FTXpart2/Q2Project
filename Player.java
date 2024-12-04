@@ -1,12 +1,18 @@
 import java.awt.*;
 
 public class Player {
-    private int row, col; // Current position of the player
+    private int row, col, restartRow, restartCol; // Current position of the player
     private final Color color = Color.RED; // Player's color
 
     public Player(int startRow, int startCol) {
         this.row = startRow;
         this.col = startCol;
+        restartRow = startRow;
+        restartCol = startCol;
+    }
+    public void restart(){
+        row = restartRow;
+        col = restartCol;
     }
 
     public int getRow() {
@@ -56,7 +62,7 @@ public class Player {
             for (int[] location : nogoareas) {
                 
                 if(newRow == location[0] && newCol == location[1] ){
-                    System.out.println("ur  on water");
+                    System.out.println("");
                     action = true;
                     break;
                     

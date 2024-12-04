@@ -28,8 +28,10 @@ public class Obstacle {
         }
     }
 
-    public void drawMe(Graphics g, int x, int y, int cellSize) {
+    public void drawMe(Graphics g, int x, int y, int cellSize, String name) {
         g.setColor(color);
         g.fillRect(x + cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize / 2);
+
+        
     }
 }
