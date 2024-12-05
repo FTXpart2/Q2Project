@@ -1,6 +1,8 @@
 import java.awt.*;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int row, col, restartRow, restartCol; // Current position of the player
     private final Color color = Color.RED; // Player's color
 

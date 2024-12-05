@@ -3,10 +3,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-public class Bridge {
+import java.io.Serializable;
+public class Bridge implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int row, col;
     private final Color color = Color.BLACK; // Obstacle's color
-    private BufferedImage bridge;
+    private transient BufferedImage bridge;
 
     public Bridge(int startRow, int startCol) {
         this.row = startRow;

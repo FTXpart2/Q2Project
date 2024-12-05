@@ -1,24 +1,32 @@
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-public class GridMap extends JPanel {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import java.io.Serializable;
+public class GridMap extends JPanel implements ActionListener, Serializable{
+    private static final long serialVersionUID = 1L;
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
     private final int CELL_SIZE = 50;
-    private final HashMap<Location, LinkedList<GridObject>> gridMapTable = new HashMap<>();
-    private Player player;
-    private Obstacle obstacle; // Obstacle instance
-    private Obstacle obstacle2;
-    private Obstacle obstacle3;
-    private Obstacle obstacle4;
-    
+    private final transient MyHashTable<Location, DLList<GridObject>> gridMapTable = new MyHashTable<>(100);
+    private transient Player player;
+    private transient Obstacle obstacle; // Obstacle instance
+    private transient Obstacle obstacle2;
+    private transient Obstacle obstacle3;
+    private transient Obstacle obstacle4;
+    private JButton save;
     public GridMap(Player player) {
         this.player = player;
         this.obstacle = new Obstacle(50, 50); // Starting position for the obstacle
@@ -42,8 +50,18 @@ public class GridMap extends JPanel {
             }
         });
         obstacleThread.start();
-    }
 
+        save = new JButton("Save");
+        save.setBounds(50, 130, 90, 40); //sets the location and size
+        save.addActionListener(this); //add the listener
+        this.add(save);
+        save.setVisible(true);
+    }
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == save){
+            this.saveData("data.ser");
+        }
+    }
     private void generateGermanyMap() {
         // Generate the map as before (with terrain, river, etc.)
         int germanyTop = 10, germanyBottom = 90;
@@ -169,9 +187,14 @@ public class GridMap extends JPanel {
     }
 
     public void addObject(int row, int col, GridObject obj) {
-        Location loc = new Location(row, col);
-        gridMapTable.computeIfAbsent(loc, k -> new LinkedList<>()).add(obj);
+    Location loc = new Location(row, col);
+    DLList<GridObject> objects = gridMapTable.get(loc);
+    if (objects == null) {
+        objects = new DLList<>();
+        gridMapTable.put(loc, objects);
     }
+    objects.add(obj); // Adjust DLList add method for single argument if needed
+}
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -251,40 +274,7 @@ public class GridMap extends JPanel {
          if(obstacle4.getCol() == player.getCol() && obstacle4.getRow() == player.getRow()){
             player.restart();
         }
-        /* 
-        
-                
-                JPanel imagePanel = new JPanel();
-                imagePanel.setLayout(new GridLayout(0, 1)); // One column for images
-
-                // Limit images to a maximum of 2
-                int count = 0;
-                for (String url : info.getLandmarkPictures()) {
-                    if (count < 2) {
-                        try {
-                            ImageIcon icon = new ImageIcon(new URL(url));
-                            if (icon.getIconWidth() > 0) { // Check if image loaded
-                                JLabel label = new JLabel(icon);
-                                imagePanel.add(label);
-                                count++;
-                            } else {
-                                System.err.println("Image not found or invalid URL: " + url);
-                            }
-                        } catch (Exception e) {
-                            System.err.println("Failed to load image from URL: " + url);
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                // Show images in a dialog
-                if (count > 0) {
-                    JOptionPane.showMessageDialog(frame, imagePanel, "State Info and Pictures", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(frame, "No pictures available for this state.", "State Info", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } 
-*/
+       
 
     }
 
@@ -307,6 +297,23 @@ public class GridMap extends JPanel {
             g.drawString("Austria", getWidth() / 2 - 30, getHeight() - 10); // Bottom
         }
     }
+    public void saveData(String filename) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+}
+
+public static GridMap loadData(String filename) {
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+        return (GridMap) in.readObject();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+  
+  }
 
     
 }

@@ -1,6 +1,7 @@
 import java.awt.*;
-
-public class Obstacle {
+import java.io.Serializable;
+public class Obstacle implements Serializable{
+    private static final long serialVersionUID = 1L;
     private int row, col;
     private final Color color = Color.BLACK; // Obstacle's color
     private int newRow, newCol;
