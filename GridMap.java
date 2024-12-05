@@ -132,6 +132,41 @@ public class GridMap extends JPanel {
         }
 
     }
+    public boolean displayImage(){
+        if((player.getRow() == 82-1 && player.getCol() == 15)||(player.getRow()==82+1 && player.getCol()==15)||(player.getCol() == 15+1 && player.getRow() == 82)||(player.getCol() == 15-1 && player.getRow() == 82)){
+            return true;
+        }
+        if((player.getRow() == 40-1 && player.getCol() == 86)||(player.getRow()==40+1 && player.getCol()==86)||(player.getCol() == 86+1 && player.getRow() == 40)||(player.getCol() == 86-1 && player.getRow() == 40)){
+            return true;
+        }
+        if((player.getRow() == 41-1 && player.getCol() == 89)||(player.getRow()==41+1 && player.getCol()==89)||(player.getCol() == 89+1 && player.getRow() == 41)||(player.getCol() == 89-1 && player.getRow() == 41)){
+            return true;
+        }
+        if((player.getRow() == 88-1 && player.getCol() == 55)||(player.getRow()==88+1 && player.getCol()==55)||(player.getCol() == 55+1 && player.getRow() == 88)||(player.getCol() == 55-1 && player.getRow() == 88)){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
+    }
+    public String landmarktype(){
+        if((player.getRow() == 82-1 && player.getCol() == 15)||(player.getRow()==82+1 && player.getCol()==15)||(player.getCol() == 15+1 && player.getRow() == 82)||(player.getCol() == 15-1 && player.getRow() == 82)){
+            return "Cologne Cathederal";
+        }
+        if((player.getRow() == 40-1 && player.getCol() == 86)||(player.getRow()==40+1 && player.getCol()==86)||(player.getCol() == 86+1 && player.getRow() == 40)||(player.getCol() == 86-1 && player.getRow() == 40)){
+            return "Berlin Wall";
+        }
+        if((player.getRow() == 41-1 && player.getCol() == 89)||(player.getRow()==41+1 && player.getCol()==89)||(player.getCol() == 89+1 && player.getRow() == 41)||(player.getCol() == 89-1 && player.getRow() == 41)){
+            return "Brandenburg Gate";
+        }
+        if((player.getRow() == 88-1 && player.getCol() == 55)||(player.getRow()==88+1 && player.getCol()==55)||(player.getCol() == 55+1 && player.getRow() == 88)||(player.getCol() == 55-1 && player.getRow() == 88)){
+            return "Neuschwanstein Castle";
+        }
+        else{
+            return "";
+        }
+    }
 
     public void addObject(int row, int col, GridObject obj) {
         Location loc = new Location(row, col);
@@ -217,7 +252,7 @@ public class GridMap extends JPanel {
             player.restart();
         }
         /* 
-        if (info != null) {
+        
                 
                 JPanel imagePanel = new JPanel();
                 imagePanel.setLayout(new GridLayout(0, 1)); // One column for images
