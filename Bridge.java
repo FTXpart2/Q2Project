@@ -1,42 +1,42 @@
-import java.awt.*;
-import javax.imageio.ImageIO;
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-public class Bridge implements Serializable{
-    private static final long serialVersionUID = 1L;
-    private int row, col;
-    private final Color color = Color.BLACK; // Obstacle's color
-    private transient BufferedImage bridge;
+import javax.imageio.ImageIO;
 
-    public Bridge(int startRow, int startCol) {
-        this.row = startRow;
-        this.col = startCol;
-        try {
-     
-      
-            bridge = ImageIO.read(new File("bridge.png"));
-           
-            
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-    }
+public class Bridge implements Serializable {
+   private static final long serialVersionUID = 1L;
+   private int row;
+   private int col;
+   private final Color color;
+   private BufferedImage bridge;
 
-    public int getRow() {
-        return row;
-    }
+   public Bridge(int var1, int var2) {
+      this.color = Color.BLACK;
+      this.row = var1;
+      this.col = var2;
 
-    public int getCol() {
-        return col;
-    }
+      try {
+         this.bridge = ImageIO.read(new File("bridge.png"));
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
 
-    
+   }
 
-    public void drawMe(Graphics g, int x, int y, int cellSize) {
-        g.setColor(color);
-       
-        g.drawImage(bridge, x+cellSize/4-14,y+cellSize/4-10,cellSize+8,cellSize+8,null);
-    }
+   public int getRow() {
+      return this.row;
+   }
+
+   public int getCol() {
+      return this.col;
+   }
+
+   public void drawMe(Graphics var1, int var2, int var3, int var4) {
+      var1.setColor(this.color);
+      var1.drawImage(this.bridge, var2 + var4 / 4 - 14, var3 + var4 / 4 - 10, var4 + 8, var4 + 8, (ImageObserver)null);
+   }
 }

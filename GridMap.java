@@ -20,15 +20,20 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
     private final int CELL_SIZE = 50;
-    private final transient MyHashTable<Location, DLList<GridObject>> gridMapTable = new MyHashTable<>(100);
-    private transient Player player;
-    private transient Obstacle obstacle; // Obstacle instance
-    private transient Obstacle obstacle2;
-    private transient Obstacle obstacle3;
-    private transient Obstacle obstacle4;
+    private MyHashTable<Location, DLList<GridObject>> gridMapTable = new MyHashTable<>(100);
+    private Player player;
+    private Obstacle obstacle; // Obstacle instance
+    private Obstacle obstacle2;
+    private Obstacle obstacle3;
+    private Obstacle obstacle4;
     private JButton save;
     public GridMap(Player player) {
-        this.player = player;
+        if (player == null) {
+            this.player = new Player(50, 50);  // Initialize with default position (0, 0)
+        } else {
+            this.player = player;  // Use the player passed to constructor (loaded state)
+        }
+       
         this.obstacle = new Obstacle(50, 50); // Starting position for the obstacle
         generateGermanyMap();
         obstacle2 = new Obstacle(80,35);
@@ -62,6 +67,8 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
             this.saveData("data.ser");
         }
     }
+
+    
     private void generateGermanyMap() {
         // Generate the map as before (with terrain, river, etc.)
         int germanyTop = 10, germanyBottom = 90;
@@ -209,6 +216,7 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
         viewportStartCol = Math.min(viewportStartCol, GRID_SIZE - VIEWPORT_SIZE);
 
         // Draw the 10x10 viewport as before
+        
         for (int r = 0; r < VIEWPORT_SIZE; r++) {
             for (int c = 0; c < VIEWPORT_SIZE; c++) {
                 int gridRow = viewportStartRow + r;
@@ -221,6 +229,7 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
                 g.drawRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 
                 if (gridMapTable.containsKey(loc)) {
+                    
                     for (GridObject obj : gridMapTable.get(loc)) {
                         obj.drawMe(g, c * CELL_SIZE, r * CELL_SIZE);
                     }
@@ -229,10 +238,17 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
         }
 
         // Draw the player at their position within the viewport
+         if (player != null) {
+            int row = player.getRow();
+            int col = player.getCol();
+            
+         }
+         else {
+        System.out.println("Player is null, unable to paint.");
         
+        }
         int playerViewportX = (player.getCol() - viewportStartCol) * CELL_SIZE;
         int playerViewportY = (player.getRow() - viewportStartRow) * CELL_SIZE;
-      
 
         // Draw the obstacle
         int obstacleViewportX = (obstacle.getCol() - viewportStartCol) * CELL_SIZE;
@@ -306,12 +322,13 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
 }
 
 public static GridMap loadData(String filename) {
-    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-        return (GridMap) in.readObject();
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    }
+   
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            return (GridMap) in.readObject();
+        } catch (Exception e) {
+            return null; // Return null if there's an error loading
+        }
+    
   
   }
 

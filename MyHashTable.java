@@ -6,7 +6,7 @@ public class MyHashTable<K, V> implements Serializable {
     private int capacity;
 
     // Node class to store key-value pairs
-    private static class Node<K, V> {
+    private static class Node<K, V> implements Serializable{
         K key;
         V value;
 

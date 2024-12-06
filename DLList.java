@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 public class DLList<T> implements Iterable<T>, Serializable {
     private static final long serialVersionUID = 1L;
-    private class Node {
+    private class Node implements Serializable{
         T data;
         Node next;
         Node prev;
@@ -12,8 +12,8 @@ public class DLList<T> implements Iterable<T>, Serializable {
         }
     }
 
-    private transient Node head;
-    private transient Node tail;
+    private Node head;
+    private Node tail;
     private int size;
 
     public void add(T data) {

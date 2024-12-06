@@ -8,19 +8,39 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.io.Serializable;
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+
 public class Runner implements Serializable {
     private static final long serialVersionUID = 1L;
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Germany");
         Player player = new Player(50, 50); // Start the player near the center of the grid
         
         GridMap c = GridMap.loadData("data.ser");
-        if (c == null) {
-            c = new GridMap(player); // Create a new instance if loading fails
+        
+        if (c != null) {  
+            frame.getContentPane().removeAll();  
+            frame.revalidate();  
+            frame.repaint();  
+            frame.getContentPane().removeAll();  
+            frame.getContentPane().add(c);  
+            c.setFocusable(true);  
+            c.requestFocusInWindow(); // Request focus for key events  
+            frame.revalidate();  
+            frame.repaint();  
+        }
+        else{
+            c = new GridMap(player);
         }
         final GridMap gridMap = c;
         frame.add(gridMap);
+        gridMap.repaint();
         frame.setSize(500, 500); // 20x20 cells visible, each 25px
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -34,7 +54,7 @@ public class Runner implements Serializable {
             public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
                 int dRow = 0, dCol = 0;
-                
+
                 System.out.println("Key Pressed: " + key); // Debugging key press
 
                 switch (key) {
@@ -47,6 +67,8 @@ public class Runner implements Serializable {
                 // Update player position
                 player.move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
+
+                // Display image if necessary (you may want to handle it better)
                 if (gridMap.displayImage()) {
                     JPanel imagePanel = new JPanel();
                     imagePanel.setLayout(new GridLayout(0, 1)); // One column for images
@@ -84,6 +106,29 @@ public class Runner implements Serializable {
             }
         });
 
+        // Add Save button to JFrame
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(e -> {
+            // Save the current game state to file
+            try {
+                saveGame(gridMap, "data.ser");
+                JOptionPane.showMessageDialog(frame, "Game saved successfully!", "Save", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(frame, "Error saving game: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Add the button to the frame
+        
+        frame.add(saveButton, BorderLayout.SOUTH); // Add button at the bottom
         frame.setVisible(true);
+    }
+
+    // Serialization method
+    private static void saveGame(GridMap gridMap, String filename) throws IOException {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(gridMap);  // Serialize the GridMap object (which contains Player, obstacles, etc.)
+            System.out.println("Game saved!");
+        }
     }
 }
