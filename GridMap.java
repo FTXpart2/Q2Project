@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import java.io.Serializable;
-public class GridMap extends JPanel implements ActionListener, Serializable{
+public class GridMap extends JPanel implements Serializable{
     private static final long serialVersionUID = 1L;
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
@@ -26,7 +26,7 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
     private Obstacle obstacle2;
     private Obstacle obstacle3;
     private Obstacle obstacle4;
-    private JButton save;
+ 
     public GridMap(Player player) {
         if (player == null) {
             this.player = new Player(50, 50);  // Initialize with default position (0, 0)
@@ -56,18 +56,9 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
         });
         obstacleThread.start();
 
-        save = new JButton("Save");
-        save.setBounds(50, 130, 90, 40); //sets the location and size
-        save.addActionListener(this); //add the listener
-        this.add(save);
-        save.setVisible(true);
+        
     }
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == save){
-            this.saveData("data.ser");
-        }
-    }
-
+    
     
     private void generateGermanyMap() {
         // Generate the map as before (with terrain, river, etc.)
@@ -145,6 +136,9 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
             addObject(row, col, new GridObject("", Color.BLUE)); // Cyan color for river
         }
 
+    }
+    public Player getPlayer() {
+    return this.player;
     }
     
     private void drawLandmarks(){
@@ -322,15 +316,15 @@ public class GridMap extends JPanel implements ActionListener, Serializable{
 }
 
 public static GridMap loadData(String filename) {
-   
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
-            return (GridMap) in.readObject();
-        } catch (Exception e) {
-            return null; // Return null if there's an error loading
-        }
-    
-  
-  }
-
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+        GridMap gridMap = (GridMap) in.readObject();
+        System.out.println("Deserialized GridMap: Player at (" 
+            + gridMap.getPlayer().getRow() + ", " + gridMap.getPlayer().getCol() + ")");
+        return gridMap;
+    } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
     
 }

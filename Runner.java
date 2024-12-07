@@ -25,22 +25,40 @@ public class Runner implements Serializable {
         GridMap c = GridMap.loadData("data.ser");
         
         if (c != null) {  
-            frame.getContentPane().removeAll();  
-            frame.revalidate();  
-            frame.repaint();  
-            frame.getContentPane().removeAll();  
-            frame.getContentPane().add(c);  
+             
             c.setFocusable(true);  
             c.requestFocusInWindow(); // Request focus for key events  
             frame.revalidate();  
             frame.repaint();  
+            c.repaint();
+            c.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                int dRow = 0, dCol = 0;
+
+                switch (key) {
+                    case KeyEvent.VK_W -> dRow = -1; // Move up
+                    case KeyEvent.VK_S -> dRow = 1;  // Move down
+                    case KeyEvent.VK_A -> dCol = -1; // Move left
+                    case KeyEvent.VK_D -> dCol = 1;  // Move right
+                }
+
+                // Update player position
+                player.move(dRow, dCol);
+                frame.repaint(); // Redraw the grid
+            }
+        });
         }
         else{
             c = new GridMap(player);
         }
-        final GridMap gridMap = c;
-        frame.add(gridMap);
-        gridMap.repaint();
+        GridMap gridMap = c;
+        frame.getContentPane().removeAll(); // Clear components
+        frame.getContentPane().add(gridMap); // Re-add the GridMap
+        frame.revalidate(); // Refresh layout
+        frame.repaint(); // Redraw everything
+
         frame.setSize(500, 500); // 20x20 cells visible, each 25px
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -65,6 +83,7 @@ public class Runner implements Serializable {
                 }
 
                 // Update player position
+                System.out.println("moved");
                 player.move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
 
@@ -113,6 +132,10 @@ public class Runner implements Serializable {
             try {
                 saveGame(gridMap, "data.ser");
                 JOptionPane.showMessageDialog(frame, "Game saved successfully!", "Save", JOptionPane.INFORMATION_MESSAGE);
+                 gridMap.repaint();
+
+        // Ensure the GridMap retains focus for key events
+                gridMap.requestFocusInWindow();
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame, "Error saving game: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
             }
