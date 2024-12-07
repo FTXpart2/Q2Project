@@ -59,7 +59,24 @@ public class GridMap extends JPanel implements Serializable{
         
     }
     
-    
+    public void startObstacleThread() {
+    Thread obstacleThread = new Thread(() -> {
+        while (true) {
+            obstacle.move();
+            obstacle2.move();
+            obstacle3.move();
+            obstacle4.move();
+            repaint();
+            try {
+                Thread.sleep(500); // Move the obstacle every 500ms
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    obstacleThread.start();
+}
+
     private void generateGermanyMap() {
         // Generate the map as before (with terrain, river, etc.)
         int germanyTop = 10, germanyBottom = 90;
@@ -138,7 +155,7 @@ public class GridMap extends JPanel implements Serializable{
 
     }
     public Player getPlayer() {
-    return this.player;
+        return player;
     }
     
     private void drawLandmarks(){
@@ -318,13 +335,12 @@ public class GridMap extends JPanel implements Serializable{
 public static GridMap loadData(String filename) {
     try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
         GridMap gridMap = (GridMap) in.readObject();
-        System.out.println("Deserialized GridMap: Player at (" 
-            + gridMap.getPlayer().getRow() + ", " + gridMap.getPlayer().getCol() + ")");
+        gridMap.startObstacleThread(); // Add this line to restart the thread
         return gridMap;
-    } catch (IOException | ClassNotFoundException e) {
-        e.printStackTrace();
-        return null;
+    } catch (Exception e) {
+        return null; // Return null if there's an error loading
     }
 }
+
     
 }

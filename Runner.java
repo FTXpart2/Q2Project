@@ -15,13 +15,28 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
+import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+import java.io.Serializable;
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+
 public class Runner implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Germany");
-        Player player = new Player(50, 50); // Start the player near the center of the grid
-        
         GridMap c = GridMap.loadData("data.ser");
         
         if (c != null) {  
@@ -45,15 +60,17 @@ public class Runner implements Serializable {
                 }
 
                 // Update player position
-                player.move(dRow, dCol);
+                
                 frame.repaint(); // Redraw the grid
             }
         });
         }
         else{
-            c = new GridMap(player);
+            
+               c = new GridMap(new Player(50, 50));
         }
         GridMap gridMap = c;
+        gridMap.startObstacleThread(); 
         frame.getContentPane().removeAll(); // Clear components
         frame.getContentPane().add(gridMap); // Re-add the GridMap
         frame.revalidate(); // Refresh layout
@@ -84,7 +101,7 @@ public class Runner implements Serializable {
 
                 // Update player position
                 System.out.println("moved");
-                player.move(dRow, dCol);
+                gridMap.getPlayer().move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
 
                 // Display image if necessary (you may want to handle it better)
