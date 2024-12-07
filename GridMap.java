@@ -39,7 +39,10 @@ public class GridMap extends JPanel implements Serializable{
         obstacle2 = new Obstacle(80,35);
         obstacle3 = new Obstacle(20, 30);
         obstacle4 = new Obstacle(20, 70);
-        // Start the obstacle movement thread
+        
+    }
+
+    public void startObstacleThread() {
         Thread obstacleThread = new Thread(() -> {
             while (true) {
                 obstacle.move();
@@ -55,8 +58,6 @@ public class GridMap extends JPanel implements Serializable{
             }
         });
         obstacleThread.start();
-
-        
     }
     
     

@@ -20,8 +20,6 @@ public class Runner implements Serializable {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Germany");
-        Player player = new Player(50, 50); // Start the player near the center of the grid
-        
         GridMap c = GridMap.loadData("data.ser");
         
         if (c != null) {  
@@ -45,15 +43,16 @@ public class Runner implements Serializable {
                 }
 
                 // Update player position
-                player.move(dRow, dCol);
+                gridMap.getPlayer().move(dRow, dCol);
                 frame.repaint(); // Redraw the grid
             }
         });
-        }
-        else{
-            c = new GridMap(player);
+        } else {
+            c = new GridMap(new Player(50, 50));
         }
         GridMap gridMap = c;
+        gridMap.startObstacleThread(); // Start the obstacle thread
+
         frame.getContentPane().removeAll(); // Clear components
         frame.getContentPane().add(gridMap); // Re-add the GridMap
         frame.revalidate(); // Refresh layout
@@ -84,7 +83,7 @@ public class Runner implements Serializable {
 
                 // Update player position
                 System.out.println("moved");
-                player.move(dRow, dCol);
+                gridMap.getPlayer().move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
 
                 // Display image if necessary (you may want to handle it better)
