@@ -23,9 +23,9 @@ public class Landmark implements Serializable {
       try {
         
          this.Castle = ImageIO.read(new File("Castle.png"));
-         this.Gate = ImageIO.read(new File("Gate.png"));
+         this.Gate = ImageIO.read(new File("Gate1.png"));
          this.Church = ImageIO.read(new File("Church.png"));
-         this.Wall = ImageIO.read(new File("Wall.jpg"));
+         this.Wall = ImageIO.read(new File("wall1.png"));
       } catch (Exception var4) {
          var4.printStackTrace();
       }
@@ -44,19 +44,19 @@ public class Landmark implements Serializable {
       var1.setColor(this.color);
         if(name == "Berlin Wall"){
             //draw picture
-             var1.drawImage(this.Wall, var2 + var4 / 4 - 14, var3 + var4 / 4 - 10, var4 + 8, var4 + 8, (ImageObserver)null);
+             var1.drawImage(Wall, var2 + var4 / 4 - 12, var3 + var4 / 4 -10, var4, var4, (ImageObserver)null);
         }
         if(name == "Cologne Cathederal"){
             //draw picture
-             var1.drawImage(this.Church, var2 + var4 / 4 - 14, var3 + var4 / 4 - 10, var4 + 8, var4 + 8, (ImageObserver)null);
+             var1.drawImage(Church, var2 + var4 / 4 - 12, var3 + var4 / 4 - 13, var4, var4, (ImageObserver)null);
         }
         if(name == "Brandenburg Gate"){
             //draw picture
-             var1.drawImage(this.Gate, var2 + var4 / 4 - 14, var3 + var4 / 4 - 10, var4 + 8, var4 + 8, (ImageObserver)null);
+             var1.drawImage(Gate, var2 + var4 / 4 - 12, var3 + var4 / 4 - 14, var4, var4, (ImageObserver)null);
         }
         if(name == "Neuschwanstein Castle"){
             //draw picture
-             var1.drawImage(this.Castle, var2 + var4 / 4 - 14, var3 + var4 / 4 - 10, var4 + 8, var4 + 8, (ImageObserver)null);
+             var1.drawImage(Castle, var2 + var4 / 4 - 14, var3 + var4 / 4 - 13, var4, var4, (ImageObserver)null);
         }
      
    }
