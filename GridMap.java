@@ -278,6 +278,7 @@ public class GridMap extends JPanel implements Serializable{
         int[][] bridges = {{84, 16},{48, 41},{27, 58}
 
         };
+
         ArrayList<Bridge> drawbridges = new ArrayList<>();
         for (int[] location : bridges) {
             int row = location[0];
@@ -286,6 +287,17 @@ public class GridMap extends JPanel implements Serializable{
         }
         for(int i = 0; i < drawbridges.size(); i++){
             drawbridges.get(i).drawMe(g, (drawbridges.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawbridges.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
+        }
+        int[][] landmarks = {
+        /*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55}};
+        
+        ArrayList<Landmark> drawLandmarks = new ArrayList<>();
+        drawLandmarks.add(new Landmark(landmarks[0][0], landmarks[0][1], "Cologne Cathederal"));
+        drawLandmarks.add(new Landmark(landmarks[1][0], landmarks[1][1],"Berlin Wall"));
+        drawLandmarks.add(new Landmark(landmarks[2][0], landmarks[2][1],"Brandenburg Gate"));
+        drawLandmarks.add(new Landmark(landmarks[3][0], landmarks[3][1],"Neuschwanstein Castle"));
+        for(int i = 0; i < drawLandmarks.size(); i++){
+            drawLandmarks.get(i).drawMe(g, (drawLandmarks.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawLandmarks.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
         }
         drawBorders(g, viewportStartRow, viewportStartCol);
         player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
