@@ -90,7 +90,7 @@ public class Runner implements Serializable {
                 int key = e.getKeyCode();
                 int dRow = 0, dCol = 0;
 
-                System.out.println("Key Pressed: " + key); // Debugging key press
+                 // Debugging key press
 
                 switch (key) {
                     case KeyEvent.VK_W -> dRow = -1; // Move up
@@ -100,7 +100,7 @@ public class Runner implements Serializable {
                 }
 
                 // Update player position
-                System.out.println("moved");
+    
                 gridMap.getPlayer().move(dRow, dCol);
                 gridMap.repaint(); // Redraw the grid
 
@@ -137,7 +137,7 @@ public class Runner implements Serializable {
                         System.err.println("Failed to load image from URL: " + url);
                         x.printStackTrace();
                     }
-                    JOptionPane.showMessageDialog(frame, imagePanel, "Landmark Picture", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, imagePanel, gridMap.landmarktype(), JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });

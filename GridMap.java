@@ -123,7 +123,7 @@ public class GridMap extends JPanel implements Serializable{
             }
         }
         drawRhineRiver();
-        drawLandmarks();
+        
     }
 
     private void drawRhineRiver() {
@@ -267,10 +267,10 @@ public class GridMap extends JPanel implements Serializable{
         obstacle.drawMe(g, obstacleViewportX, obstacleViewportY, CELL_SIZE, "Audi");
         int obstacleViewportX1 = (obstacle2.getCol() - viewportStartCol) * CELL_SIZE;
         int obstacleViewportY1 = (obstacle2.getRow() - viewportStartRow) * CELL_SIZE;
-        obstacle2.drawMe(g, obstacleViewportX1, obstacleViewportY1, CELL_SIZE,"Panzer");
+        obstacle2.drawMe(g, obstacleViewportX1, obstacleViewportY1, CELL_SIZE,"Tank");
         int obstacleViewportX2 = (obstacle3.getCol() - viewportStartCol) * CELL_SIZE;
         int obstacleViewportY2 = (obstacle3.getRow() - viewportStartRow) * CELL_SIZE;
-        obstacle3.drawMe(g, obstacleViewportX2, obstacleViewportY2, CELL_SIZE,"Beetle");
+        obstacle3.drawMe(g, obstacleViewportX2, obstacleViewportY2, CELL_SIZE,"Audi");
         int obstacleViewportX3 = (obstacle4.getCol() - viewportStartCol) * CELL_SIZE;
         int obstacleViewportY3 = (obstacle4.getRow() - viewportStartRow) * CELL_SIZE;
         obstacle4.drawMe(g, obstacleViewportX3, obstacleViewportY3, CELL_SIZE, "Mercedes");

@@ -1,16 +1,27 @@
 import java.awt.*;
 import java.io.Serializable;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 public class Player implements Serializable{
     private static final long serialVersionUID = 1L;
     private int row, col, restartRow, restartCol; // Current position of the player
     private final Color color = Color.RED; // Player's color
-
+    private BufferedImage sprite;
     public Player(int startRow, int startCol) {
         this.row = startRow;
         this.col = startCol;
         restartRow = startRow;
         restartCol = startCol;
+        try {
+            this.sprite = ImageIO.read(new File("man.png"));
+         } catch (Exception var4) {
+            var4.printStackTrace();
+         }
     }
     public void restart(){
         row = restartRow;
@@ -85,6 +96,7 @@ public class Player implements Serializable{
 
     public void drawMe(Graphics g, int x, int y, int cellSize) {
         g.setColor(color);
-        g.fillOval(x + cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize / 2);
+        g.drawImage(sprite,x+8,y-2,cellSize/2, cellSize-6, null);
+        
     }
 }

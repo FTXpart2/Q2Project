@@ -1,15 +1,31 @@
 import java.awt.*;
 import java.io.Serializable;
+
+import javax.imageio.ImageIO;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
 public class Obstacle implements Serializable{
     private static final long serialVersionUID = 1L;
     private int row, col;
     private final Color color = Color.BLACK; // Obstacle's color
     private int newRow, newCol;
-
+    private BufferedImage Tank, Audi, Mercedes;
+    
     public Obstacle(int startRow, int startCol) {
         this.row = startRow;
         this.col = startCol;
-        
+        try {
+    
+            this.Tank = ImageIO.read(new File("Tank.png"));
+            this.Audi = ImageIO.read(new File("Audi.png"));
+            this.Mercedes = ImageIO.read(new File("Mercedes.png"));
+         } catch (Exception var4) {
+            var4.printStackTrace();
+         }
     }
 
     public int getRow() {
@@ -81,7 +97,17 @@ public class Obstacle implements Serializable{
 
     public void drawMe(Graphics g, int x, int y, int cellSize, String name) {
         g.setColor(color);
-        g.fillRect(x + cellSize / 4, y + cellSize / 4, cellSize / 2, cellSize / 2);
+        switch(name){
+            case "Tank":
+                g.drawImage(Tank, x, y, cellSize, cellSize, null);
+                break;
+            case "Audi":
+                g.drawImage(Audi, x, y, cellSize, cellSize, null);
+                break;
+            case "Mercedes":
+                g.drawImage(Mercedes, x, y, cellSize, cellSize, null);
+                break;
+        }
 
         
     }
