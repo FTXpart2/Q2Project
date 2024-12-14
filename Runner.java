@@ -148,7 +148,7 @@ public class Runner implements Serializable {
             // Save the current game state to file
             try {
                 saveGame(gridMap, "data.ser");
-                JOptionPane.showMessageDialog(frame, "Game saved successfully!", "Save", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Saved successfully!", "Save", JOptionPane.INFORMATION_MESSAGE);
                  gridMap.repaint();
 
         // Ensure the GridMap retains focus for key events

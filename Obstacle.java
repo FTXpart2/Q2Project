@@ -48,6 +48,8 @@ public class Obstacle implements Serializable{
         int germanyRight = 90;
         // Random movement for the obstacle
         int direction = (int) (Math.random() * 4); // 0=up, 1=down, 2=left, 3=right
+         
+        //areas on the grid it cannot travel
         int[][] nogoareas = {
             {85,10},{85,14},{85,13},{85,12},{85,11},{85, 15}, {83, 16}, {82, 17}, {81, 18}, // Starting from the southwest
             {80, 18}, {79, 19}, {78, 19}, {77, 20}, {76, 21},
@@ -63,7 +65,7 @@ public class Obstacle implements Serializable{
             {30, 55}, {29, 56}, {28, 57}, {26, 58},
             {25, 59}, {24, 60}, {23, 60}, {22, 61}, {21, 62},
             {20, 63}, {19, 63}, {18, 64}, {17, 65}, {16, 66},
-            {15, 66}, {14, 67}, {13, 68}, {12, 69}, {11, 69},{10,69},/*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55} // Ending in the northwest
+            {15, 66}, {14, 67}, {13, 68}, {12, 69}, {11, 69},{10,69},/*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55} ,{88,58},{85,50},{87,54},{90,57},{80,49},{83,47},{84,50},{89,53},{88,59},{15,15},{14,30},{12,11},{13,25},{14,20},{12,13},{17,35},{18,20},{12,15},{15,80},{28,82},{40,84},{45,82},{50,80},{53,82},{51,78},{41,80},{45,84},{80,80},{80,50},{89,69},{80,75}
         };
         switch (direction) {
             case 0 -> newRow = row-1; // Move up
@@ -79,7 +81,6 @@ public class Obstacle implements Serializable{
             for (int[] location : nogoareas) {
                 
                 if(newRow == location[0] && newCol == location[1] ){
-                    System.out.println("");
                     action = true;
                     break;
                     

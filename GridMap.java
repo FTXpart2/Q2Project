@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import java.io.Serializable;
 public class GridMap extends JPanel implements Serializable{
     private static final long serialVersionUID = 1L;
+    //makes 100 by 100 map
     private final int GRID_SIZE = 100;
     private final int VIEWPORT_SIZE = 10;
     private final int CELL_SIZE = 50;
