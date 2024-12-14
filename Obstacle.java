@@ -13,19 +13,21 @@ public class Obstacle implements Serializable{
     private int row, col;
     private final Color color = Color.BLACK; // Obstacle's color
     private int newRow, newCol;
-    private BufferedImage Tank, Audi, Mercedes;
-    
-    public Obstacle(int startRow, int startCol) {
-        this.row = startRow;
-        this.col = startCol;
+    private static BufferedImage Tank, Audi, Mercedes;
+    static{
         try {
     
-            this.Tank = ImageIO.read(new File("Tank.png"));
-            this.Audi = ImageIO.read(new File("Audi.png"));
-            this.Mercedes = ImageIO.read(new File("Mercedes.png"));
+            Tank = ImageIO.read(new File("Tank.png"));
+            Audi = ImageIO.read(new File("Audi.png"));
+            Mercedes = ImageIO.read(new File("Mercedes.png"));
          } catch (Exception var4) {
             var4.printStackTrace();
          }
+    }
+    public Obstacle(int startRow, int startCol) {
+        this.row = startRow;
+        this.col = startCol;
+        
     }
 
     public int getRow() {

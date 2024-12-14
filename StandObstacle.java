@@ -12,23 +12,25 @@ public class StandObstacle implements Serializable {
    private int row;
    private int col;
    private final Color color;
-   private BufferedImage Tree, Rock, Mountain;
+   private static BufferedImage Tree, Rock, Mountain;
    private String name;
-
+    static{
+        try {
+        
+         
+         Tree = ImageIO.read(new File("Tree.png"));
+         Rock = ImageIO.read(new File("Boulder.png"));
+         Mountain = ImageIO.read(new File("Mountain.png"));
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+    }
    public StandObstacle(int var1, int var2, String name) {
       this.color = Color.BLACK;
       this.row = var1;
       this.col = var2;
       this.name = name;
-      try {
-        
-         
-         this.Tree = ImageIO.read(new File("Tree.png"));
-         this.Rock = ImageIO.read(new File("wall1.png"));
-         this.Mountain = ImageIO.read(new File("wall1.png"));
-      } catch (Exception var4) {
-         var4.printStackTrace();
-      }
+      
 
    }
 

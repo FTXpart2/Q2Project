@@ -12,23 +12,25 @@ public class Landmark implements Serializable {
    private int row;
    private int col;
    private final Color color;
-   private BufferedImage Castle, Gate, Wall, Church;
+   private static BufferedImage Castle, Gate, Wall, Church;
    private String name;
-
+   static{
+      try {
+        
+         Castle = ImageIO.read(new File("Castle.png"));
+         Gate = ImageIO.read(new File("Gate1.png"));
+         Church = ImageIO.read(new File("Church.png"));
+         Wall = ImageIO.read(new File("wall1.png"));
+      } catch (Exception var4) {
+         var4.printStackTrace();
+      }
+   }
    public Landmark(int var1, int var2, String name) {
       this.color = Color.BLACK;
       this.row = var1;
       this.col = var2;
       this.name = name;
-      try {
-        
-         this.Castle = ImageIO.read(new File("Castle.png"));
-         this.Gate = ImageIO.read(new File("Gate1.png"));
-         this.Church = ImageIO.read(new File("Church.png"));
-         this.Wall = ImageIO.read(new File("wall1.png"));
-      } catch (Exception var4) {
-         var4.printStackTrace();
-      }
+      
 
    }
 

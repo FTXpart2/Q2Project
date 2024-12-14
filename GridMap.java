@@ -48,7 +48,7 @@ public class GridMap extends JPanel implements Serializable{
                 obstacle4.move();
                 repaint();
                 try {
-                    Thread.sleep(500); // Move the obstacle every 500ms
+                    Thread.sleep(1000); // Move the obstacle every 500ms
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -106,15 +106,15 @@ public class GridMap extends JPanel implements Serializable{
                 } 
                 else if (row >= germanyBottom && col >= germanyLeft && col <= germanyRight) {
                     // Bottom edge (Austria)
-                    addObject(row, col, new GridObject("", Color.CYAN));
+                    addObject(row, col, new GridObject("", new Color(2, 48, 32)));
                 } 
                 else if (col < germanyLeft) {
                     // Left edge (France)
-                    addObject(row, col, new GridObject("", Color.CYAN));
+                    addObject(row, col, new GridObject("", new Color (2, 48, 32)));
                 } 
                 else if (col >= germanyRight) {
                     // Right edge (Poland)
-                    addObject(row, col, new GridObject("", Color.CYAN));
+                    addObject(row, col, new GridObject("", new Color (2, 48, 32)));
                 } 
                 else {
                     // Remaining areas filled with water
@@ -158,16 +158,7 @@ public class GridMap extends JPanel implements Serializable{
         return player;
     }
     
-    private void drawLandmarks(){
-        int[][] landmarks = {
-        /*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55}};
-        for (int[] location : landmarks) {
-            int row = location[0];
-            int col = location[1];
-            addObject(row, col, new GridObject("landmark", Color.RED)); // Cyan color for river
-        }
 
-    }
     public boolean displayImage(){
         if((player.getRow() == 82-1 && player.getCol() == 15)||(player.getRow()==82+1 && player.getCol()==15)||(player.getCol() == 15+1 && player.getRow() == 82)||(player.getCol() == 15-1 && player.getRow() == 82)){
             return true;
@@ -315,10 +306,35 @@ public class GridMap extends JPanel implements Serializable{
             drawTrees.get(i).drawMe(g, (drawTrees.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawTrees.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
         }
 
+        
+         int[][] mountains = {
+            {88,58},{85,50},{87,54},{90,57},{80,49},{83,47},{84,50},{89,53},{88,59}
+        };
+        ArrayList<StandObstacle> drawMountains = new ArrayList<>();
+        for (int[] location : mountains) {
+            int row = location[0];
+            int col = location[1];
+            drawMountains.add(new StandObstacle(row, col,"Mountain")); 
+        }
+        
+         for(int i = 0; i < drawMountains.size(); i++){
+            drawMountains.get(i).drawMe(g, (drawMountains.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawMountains.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
+        }
 
 
-
-
+         int[][] boulders = {
+            {15,80},{28,82},{40,84},{45,82},{50,80},{53,82},{51,78},{41,80},{45,84},{80,80},{80,50},{89,69},{80,75}
+        };
+        ArrayList<StandObstacle> drawBoulders = new ArrayList<>();
+        for (int[] location : boulders) {
+            int row = location[0];
+            int col = location[1];
+            drawBoulders.add(new StandObstacle(row, col,"Rock")); 
+        }
+        
+         for(int i = 0; i < drawBoulders.size(); i++){
+            drawBoulders.get(i).drawMe(g, (drawBoulders.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawBoulders.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
+        }
         drawBorders(g, viewportStartRow, viewportStartCol);
         player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
         if(obstacle.getCol() == player.getCol() && obstacle.getRow() == player.getRow()){

@@ -11,7 +11,14 @@ public class Player implements Serializable{
     private static final long serialVersionUID = 1L;
     private int row, col, restartRow, restartCol; // Current position of the player
     private final Color color = Color.RED; // Player's color
-    private BufferedImage sprite;
+    private static BufferedImage sprite;
+    static {
+        try {
+            sprite = ImageIO.read(new File("man.png"));
+         } catch (Exception var4) {
+            var4.printStackTrace();
+         }
+    }
     public Player(int startRow, int startCol) {
         this.row = startRow;
         this.col = startCol;
@@ -61,7 +68,7 @@ public class Player implements Serializable{
             {30, 55}, {29, 56}, {28, 57}, {26, 58},
             {25, 59}, {24, 60}, {23, 60}, {22, 61}, {21, 62},
             {20, 63}, {19, 63}, {18, 64}, {17, 65}, {16, 66},
-            {15, 66}, {14, 67}, {13, 68}, {12, 69}, {11, 69},{10,69},/*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55} // Ending in the northwest
+            {15, 66}, {14, 67}, {13, 68}, {12, 69}, {11, 69},{10,69},/*cologne cathederal*/{82,15},/* Berlin wall*/{40,86}, /*brandenburg gate */ {41, 89}, /* Neuschwanstein Castle */{88,55} ,{88,58},{85,50},{87,54},{90,57},{80,49},{83,47},{84,50},{89,53},{88,59},{15,15},{14,30},{12,11},{13,25},{14,20},{12,13},{17,35},{18,20},{12,15},{15,80},{28,82},{40,84},{45,82},{50,80},{53,82},{51,78},{41,80},{45,84},{80,80},{80,50},{89,69},{80,75}
         };
 
         // Check if the new position is within Germany's borders

@@ -12,18 +12,21 @@ public class Bridge implements Serializable {
    private int row;
    private int col;
    private final Color color;
-   private BufferedImage bridge;
+   private static BufferedImage bridge;
 
+   static {
+        try {
+            bridge = ImageIO.read(new File("bridge.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
    public Bridge(int var1, int var2) {
       this.color = Color.BLACK;
       this.row = var1;
       this.col = var2;
 
-      try {
-         this.bridge = ImageIO.read(new File("bridge.png"));
-      } catch (Exception var4) {
-         var4.printStackTrace();
-      }
+      
 
    }
 
