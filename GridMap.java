@@ -299,6 +299,26 @@ public class GridMap extends JPanel implements Serializable{
         for(int i = 0; i < drawLandmarks.size(); i++){
             drawLandmarks.get(i).drawMe(g, (drawLandmarks.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawLandmarks.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
         }
+
+
+        int[][] trees = {
+            {15,15},{14,30},{12,11},{13,25},{14,20},{12,13},{17,35},{18,20},{12,15}
+        };
+        ArrayList<StandObstacle> drawTrees = new ArrayList<>();
+        for (int[] location : trees) {
+            int row = location[0];
+            int col = location[1];
+            drawTrees.add(new StandObstacle(row, col,"Tree")); 
+        }
+        
+         for(int i = 0; i < drawTrees.size(); i++){
+            drawTrees.get(i).drawMe(g, (drawTrees.get(i).getCol() - viewportStartCol) * CELL_SIZE , (drawTrees.get(i).getRow() - viewportStartRow) * CELL_SIZE, CELL_SIZE);
+        }
+
+
+
+
+
         drawBorders(g, viewportStartRow, viewportStartCol);
         player.drawMe(g, playerViewportX, playerViewportY, CELL_SIZE);
         if(obstacle.getCol() == player.getCol() && obstacle.getRow() == player.getRow()){

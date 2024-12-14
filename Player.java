@@ -75,7 +75,7 @@ public class Player implements Serializable{
             for (int[] location : nogoareas) {
                 
                 if(newRow == location[0] && newCol == location[1] ){
-                    System.out.println("");
+                 
                     action = true;
                     break;
                     
